@@ -1,6 +1,6 @@
 # Construct system security plans from project data.
 
-import opencontrol
+from . import opencontrol
 
 def blockquote(s):
   # Prepend "> " to the start of each line in s.

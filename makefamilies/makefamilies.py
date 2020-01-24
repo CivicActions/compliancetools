@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 import os
-import ssp
-import opencontrol
+from lib import  ssp
+from lib import  opencontrol
 import rtyaml
 import datetime
 from pathlib import Path

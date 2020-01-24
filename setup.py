@@ -21,9 +21,9 @@ setup(
     ],
     entry_points = {
         "console_scripts": [
+            "createfiles=createfiles.createfiles:main",
             "makefamilies=makefamilies.makefamilies:main",
             "makessp=makessp.makessp:main",
-            "createfiles=createfiles.createfiles:main",
         ]
     }
 )
