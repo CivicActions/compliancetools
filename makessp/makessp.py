@@ -1,14 +1,21 @@
 #!/usr/bin/env python
 
-from os import path, mkdir
-import ssp, opencontrol
+import os
+import ssp
+import opencontrol
 import md_toc
+from pathlib import Path
 
 def main():
-    parent = path.abspath(path.dirname( __file__ ))
-    docs = path.join(parent,'docs')
+    parent = Path()
+    docs = parent.joinpath('docs')
     if not path.exists(docs):
-      mkdir(docs)
+      os.mkdir(docs)
+
+    try:
+        oc_yaml_abs = parent.joinpath("opencontrol.yaml").resolve(strict=True)
+    except FileNotFoundError:
+        print("No opencontrol.yaml file!")
 
     project = opencontrol.load_project_from_path(parent)
     ssp_doc = path.join(docs, 'ssp.md')
