@@ -13,10 +13,10 @@ setup(
     packages=find_packages(),
     zip_safe=False,
     install_requires=[
-        'click',
+        "click",
         "md-toc",
-        'pyyaml',
-        'pyyaml-include',
+        "pyyaml",
+        "pyyaml-include",
         "rtyaml",
     ],
     entry_points = {
