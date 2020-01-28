@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 import os
-from lib import  ssp
-from lib import  opencontrol
+from grc import ssp
+from grc import opencontrol
 import md_toc
 from pathlib import Path
 
@@ -18,7 +18,7 @@ def main():
         print("No opencontrol.yaml file!")
 
     project = opencontrol.load_project_from_path(parent)
-    ssp_doc = path.join(docs, 'ssp.md')
+    ssp_doc = parent.joinpath(docs, 'ssp.md')
     with open(ssp_doc, 'w') as output:
       # Table of Contents placeholder.
       print('<!--TOC-->\n\n', file=output)
