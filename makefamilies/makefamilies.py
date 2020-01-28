@@ -10,6 +10,9 @@ from pathlib import Path
 def main():
     parent = Path()
     controls_dir = parent.joinpath('docs/controls')
+    if not controls_dir.exists():
+      os.mkdirs(controls_dir)
+
     oc_yaml = parent.joinpath('opencontrol.yaml')
 
     try:

@@ -9,7 +9,7 @@ from pathlib import Path
 def main():
     parent = Path()
     docs = parent.joinpath('docs')
-    if not path.exists(docs):
+    if not docs.exists():
       os.mkdir(docs)
 
     try:
