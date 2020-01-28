@@ -31,9 +31,6 @@ def main():
             break
         families.sort()
 
-    if not controls_dir.is_dir():
-        os.mkdir(controls_dir)
-
     # Create component files.
     for family in list(dict.fromkeys(families)):
         fam_abbr = family[:2]
