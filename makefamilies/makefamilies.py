@@ -43,14 +43,5 @@ def main():
                 }), file=output)
                 output.close()
 
-    # Create Table of Contents file.
-    print("Creating controls.md index.")
-    with open(parent.joinpath('docs/controls.md'), 'w') as comp:
-        print("# Controls (compiled: {})\n".format(compiled_date.strftime("%Y.%m.%d at %H%M")),
-        file=comp)
-        comp.close()
-
-    os.system(r"cd docs && gh-md-toc controls/* | sed '/^           /d' | sed '/^   \*/d' | sed 's/^      //' | sed 's/^\(Created by \[gh-md-toc\].*$\)/<!-- \1 -->/'>> controls.md")
-
 if __name__ == '__main__':
     main()
