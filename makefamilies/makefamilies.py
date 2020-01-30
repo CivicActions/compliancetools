@@ -21,7 +21,7 @@ def main():
         print("No opencontrol.yaml file!")
 
     project = opencontrol.load_project_from_path(parent)
-    project_yaml = opencontrol.load_opencontrol_yaml(oc_yaml, "system", ("1.0.0",))
+    project_yaml = opencontrol.load_opencontrol_yaml(oc_yaml_abs, "system", ("1.0.0",))
     compiled_date = datetime.datetime.today()
     families = []
     # Create a list of all of the components in the project.s
