@@ -36,3 +36,7 @@ Options:
 ### createssp
 
 Once you have generated the _Control Families_ and the _front matter_, you can generate a markdown version of the _SSP_ using `makessp`. The `ssp.md` file will be created in the _docs/_ directory in the root of your project.
+
+## License
+
+This project is licensed under the GNU General Public License - see the [LICENSE](LICENSE) file for details.
