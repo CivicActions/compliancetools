@@ -18,12 +18,14 @@ setup(
         "pyyaml",
         "pyyaml-include",
         "rtyaml",
+        "pypandoc",
     ],
     entry_points = {
         "console_scripts": [
             "createfiles=createfiles.createfiles:main",
             "makefamilies=makefamilies.makefamilies:main",
             "makessp=makessp.makessp:main",
+            "exportto=exportto.exportto:main",
         ]
     }
 )
