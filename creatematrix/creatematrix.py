@@ -22,11 +22,11 @@ import csv
                   'fedramp-tailored'
                   'fisma-high-impact',
                   'fisma-low-impact',
-                  'fisma-moderate-impact',
+                  'fisma-mod-impact',
                   'icd-503-high',
                   'icd-503-low',
                   'icd-503-moderate',
-                ], case_sensitive=False),
+                ], case_sensitive=True),
               help="The certification to use to create the matrix.")
 def main(in_, cert):
     header, controls = getComponents(in_)
@@ -61,7 +61,7 @@ def getComponents(components_dir):
     return header, controls
 
 def createMatrix(header, controls, cert):
-    c = Path('certifications/' + cert + '.yaml')
+    c = Path('/var/lib/certifications/' + cert + '.yaml')
     f = Path(c)
     with open(f, "r") as stream:
         try:
