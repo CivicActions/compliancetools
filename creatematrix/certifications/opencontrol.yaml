@@ -1,0 +1,19 @@
+schema_version: "1.0.0"
+name: FedRAMP Certifications
+metadata:
+  description: "Certifications in OpenControl format."
+  maintainers:
+    - Shawn Wells (shawn@redhat.com)
+    - Mark Shoger (mshoger@redhat.com)
+certifications:
+  - ./dhs-4300a.yaml
+  - ./icd-503-low.yaml
+  - ./icd-503-moderate.yaml
+  - ./icd-503-high.yaml
+  - ./fedramp-tailored.yaml
+  - ./fedramp-low.yaml
+  - ./fedramp-moderate.yaml
+  - ./fedramp-high.yaml
+  - ./fisma-low-impact.yaml
+  - ./fisma-mod-impact.yaml
+  - ./fisma-high-impact.yaml
