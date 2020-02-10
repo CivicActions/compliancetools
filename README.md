@@ -37,6 +37,28 @@ Options:
 
 Once you have generated the _Control Families_ and the _front matter_, you can generate a markdown version of the _SSP_ using `makessp`. The `ssp.md` file will be created in the _docs/_ directory in the root of your project.
 
+### creatematrix
+
+`creatematrix` will generate a **responsiblity matrix** spreadsheet based on the components generated using createfiles. The spreadsheet shows the status of components such as _In Place_, _Planned_, _Inherited_, etc, and who is implementing those components.
+
+Example:
+`creatematrix --in components --cert fisma-low-impact`
+
+`-i`, `--in` - This is the path to the components directory. This will default to `./components/` if no option is provided.
+
+`-c`, `--cert` - Define what _certification_ to use to generate the matrix. If not provided, this will default to `fisma-low-impact`.
+
+```bash
+Usage: creatematrix.py [OPTIONS]
+
+Options:
+  -i, --in DIRECTORY              The path to the components directory.
+  -c, --cert [dhs-4300a|fedramp-high|fedramp-low|fedramp-moderate|fedramp-tailoredfisma-high-impact|fisma-low-impact|fisma-moderate-impact|icd-503-high|icd-503-low|icd-503-moderate]
+                                  The certification to use to create the
+                                  matrix.
+  --help                          Show this message and exit.
+```
+
 ## License
 
 This project is licensed under the GNU General Public License - see the [LICENSE](LICENSE) file for details.

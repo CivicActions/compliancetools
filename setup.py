@@ -26,6 +26,7 @@ setup(
             "makefamilies=makefamilies.makefamilies:main",
             "makessp=makessp.makessp:main",
             "exportto=exportto.exportto:main",
+            "creatematrix=creatematrix.creatematrix:main",
         ]
     }
 )

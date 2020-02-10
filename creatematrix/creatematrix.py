@@ -7,12 +7,12 @@ import csv
 
 @click.command()
 @click.option("--in", "-i", "in_",
-              required=True,
+              required=False,
               default="components",
               type=click.Path(exists=True, file_okay=False, dir_okay=True),
               help="The path to the components directory.")
 @click.option("--cert", "-c", "cert",
-              required=True,
+              required=False,
               default="fisma-low-impact",
               type=click.Choice([
                   'dhs-4300a',
@@ -27,7 +27,7 @@ import csv
                   'icd-503-low',
                   'icd-503-moderate',
                 ], case_sensitive=False),
-              help="The path to the components directory.")
+              help="The certification to use to create the matrix.")
 def main(in_, cert):
     header, controls = getComponents(in_)
     createMatrix(header, controls, cert)
