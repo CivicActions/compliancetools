@@ -63,6 +63,12 @@ def getComponents(components_dir):
 def createMatrix(header, controls, cert):
     c = Path('/var/lib/certifications/' + cert + '.yaml')
     f = Path(c)
+    try:
+        f_absolute = f.resolve(strict=True)
+    except FileNotFoundError as e:
+        print(e)
+
+    print('Creating responsibility matrix based on certification: {}'.format(cert))
     with open(f, "r") as stream:
         try:
             opencontrol = yaml.safe_load(stream)
@@ -84,8 +90,8 @@ def createMatrix(header, controls, cert):
                 else:
                     row.append("")
             rows.append(row)
-
-    with open("resp_matrix.csv", "w+") as stream:
+    print('Creating file responsibility_matrix.csv')
+    with open("responsibility_matrix.csv", "w+") as stream:
         writer = csv.writer(stream)
         writer.writerows(rows)
 

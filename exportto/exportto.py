@@ -25,13 +25,16 @@ def main(control_dir, file_type, out_):
       os.mkdir(output_dir)
 
     dirpath = Path(control_dir)
-    assert(dirpath.is_dir())
+    try:
+      dirpath_abs = dirpath.resolve(strict=True)
+    except FileNotFoundError as e:
+        print(e)
+
     for x in dirpath.iterdir():
         if x.is_file() and x.suffix == '.md':
             outfile = output_dir.joinpath(x.stem+'.'+file_type)
             print("Creating file {}".format(outfile))
             output = pypandoc.convert_file(str(x), file_type, outputfile=str(outfile))
-            assert output == ""
 
 if __name__ == '__main__':
     main()
