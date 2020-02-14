@@ -38,15 +38,14 @@ def main(in_, template_dir, out_):
     for tf in templates:
         new_path = rewrite(tf, td, od)
         new_file = Path(new_path)
-        if tf.name != 'component.yaml':
-            ext = new_file.suffix
-            if ext == '.j2':
-                new_file = new_file.with_name(new_file.stem)
+        ext = new_file.suffix
+        if ext == '.j2':
+            new_file = new_file.with_name(new_file.stem)
 
-            if not new_file.parent.is_dir():
-                new_file.parent.mkdir(parents=True, exist_ok=True)
-            print("Creating file: {} from {}".format(new_file, tf))
-            secrender.secrender(tf, template_args, new_file)
+        if not new_file.parent.is_dir():
+            new_file.parent.mkdir(parents=True, exist_ok=True)
+        print("Creating file: {} from {}".format(new_file, tf))
+        secrender.secrender(tf, template_args, new_file)
 
 def load_template_args(in_):
     YamlIncludeConstructor.add_to_loader_class(loader_class=FullLoader)
