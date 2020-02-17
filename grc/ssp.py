@@ -69,7 +69,7 @@ def build_ssp(project, options):
       # description.
       if options.get("include-control-descriptions"):
         if len(current_section) == 3 and narrative["control"].get("description"):
-          buf.write(narrative["control"]["description"] + "\n\n")
+          buf.write("```text\n" + narrative["control"]["description"] + "\n```\n\n")
 
 
     # Output the narrative text. We assume the narrative text is formatted
