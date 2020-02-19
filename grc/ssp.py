@@ -1,6 +1,8 @@
 # Construct system security plans from project data.
 
 from . import opencontrol
+from pathlib import Path
+import rtyaml
 
 def blockquote(s):
   # Prepend "> " to the start of each line in s.
@@ -15,6 +17,16 @@ def build_ssp(project, options):
 
   # Load the standards in use by this project.
   standards = opencontrol.load_project_standards(project)
+  s = Path('keys/status.yaml')
+  try:
+    s_abs = s.resolve(strict=True)
+  except FileNotFoundError as e:
+    print(e)
+  with open(s_abs, encoding="utf8") as f:
+    try:
+        statuses = rtyaml.load(f)
+    except Exception as e:
+      print(e)
 
   # Collect all of the control narratives.
   narratives = []
@@ -70,7 +82,11 @@ def build_ssp(project, options):
       if options.get("include-control-descriptions"):
         if len(current_section) == 3 and narrative["control"].get("description"):
           buf.write("```text\n" + narrative["control"]["description"] + "\n```\n\n")
-
+          id = narrative["control"]["id"].replace("-","_").replace(" (", "_").replace(")", "")
+          if id in statuses:
+            buf.write("**Status:** " + statuses[id]['implementation_status'].capitalize() + "\n\n")
+          if id in statuses and statuses[id]['summary'] is not None:
+            buf.write("**Summary:** " + statuses[id]['summary'] + "\n\n")
 
     # Output the narrative text. We assume the narrative text is formatted
     # as Markdown --- we don't escape anything.
