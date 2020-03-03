@@ -24,7 +24,7 @@ def build_ssp(project, options):
     print(e)
   with open(s_abs, encoding="utf8") as f:
     try:
-        statuses = rtyaml.load(f)
+      statuses = rtyaml.load(f)
     except Exception as e:
       print(e)
 

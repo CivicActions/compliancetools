@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+# Copyright 2019-2020 CivicActions, Inc. See the README file at the top-level
+# directory of this distribution and at https://github.com/CivicActions/compliancetools#copyright.
+
 from setuptools import setup
 from setuptools import find_packages
 

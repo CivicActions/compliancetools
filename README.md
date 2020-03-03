@@ -59,6 +59,15 @@ Options:
   --help                          Show this message and exit.
 ```
 
+## Major Contributors
+
+* **Tom Wood** - *Initial work* - [Woodt](https://github.com/woodt)
+* **Tom Camp** - [Tom-Camp](https://github.com/Tom-Camp)
+
 ## License
 
-This project is licensed under the GNU General Public License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the GNU General Public License version 3 or any later version - see the [LICENSE](LICENSE) file for details. Some portions of this code are dedicated to the public domain under the terms of the Creative Commons
+
+## Copyright
+
+Copyright 2019-200 CivicActions, Inc.
