@@ -15,6 +15,8 @@ from yaml import load, FullLoader
 from yamlinclude import YamlIncludeConstructor
 from pathlib import Path
 from itertools import zip_longest, dropwhile
+import md_toc
+import mmap
 
 @click.command()
 @click.option('--in', '-i', 'in_',
@@ -50,6 +52,8 @@ def main(in_, template_dir, out_):
         print("Creating file: {} from {}".format(new_file, tf))
         secrender.secrender(tf, template_args, new_file)
 
+        find_toc_tag(str(new_file))
+
 def load_template_args(in_):
     YamlIncludeConstructor.add_to_loader_class(loader_class=FullLoader)
     with open(in_, "r") as stream:
@@ -59,6 +63,16 @@ def load_template_args(in_):
 def rewrite(tf, td, od):
     subpath = [p[0] for p in dropwhile(lambda f: f[0] == f[1], zip_longest(tf.parts, td.parts))]
     return str(od / Path(*subpath))
+
+def find_toc_tag(file):
+    with open(file, 'rb', 0) as f, \
+        mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ) as s:
+        if s.find(b'<!--TOC-->') != -1:
+            write_toc(file)
+
+def write_toc(file):
+    toc = md_toc.build_toc(file, keep_header_levels=3, skip_lines=5)
+    md_toc.write_string_on_file_between_markers(file, toc, '<!--TOC-->')
 
 if __name__ == '__main__':
     main()

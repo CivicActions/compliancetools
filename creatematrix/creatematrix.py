@@ -64,8 +64,7 @@ def getComponents(components_dir):
     return header, controls
 
 def createMatrix(header, controls, cert):
-    c = Path('/var/lib/certifications/' + cert + '.yaml')
-    f = Path(c)
+    f = Path('/var/lib/certifications/' + cert + '.yaml')
     try:
         f_absolute = f.resolve(strict=True)
     except FileNotFoundError as e:
