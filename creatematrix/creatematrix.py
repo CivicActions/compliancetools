@@ -39,7 +39,9 @@ def getComponents(components_dir):
     p = Path(components_dir).rglob("*.yaml")
     filelist = [x for x in p if x.is_file()]
     controls = {}
-    header = {"id": "Control ID", "name": "Name"}
+    header = {"id": "Control ID", "name": "Name", "status": "Status"}
+    with open('keys/status.yaml', "r") as st:
+        statuses = yaml.safe_load(st)
     for f in filelist:
         if f.name != "component.yaml":
             entity = f.parent.name
@@ -53,13 +55,17 @@ def getComponents(components_dir):
                 key = s["control_key"]
 
                 if "implementation_status" in s:
-                    status = s["implementation_status"]
+                    implements = "x"
                 else:
-                    status = ""
+                    implements = ""
 
                 if key not in controls:
                     controls.update({key: {"name": s["control_name"], "id": key}})
-                controls[key].update({entity: status})
+                controls[key].update({entity: implements})
+
+                status_key = key.replace('-', '_').replace(' (', '_').replace(')', '')
+                if status_key in statuses:
+                    controls[key].update({"status": statuses[status_key]["implementation_status"]})
 
     return header, controls
 
