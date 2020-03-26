@@ -59,6 +59,29 @@ Options:
   --help                          Show this message and exit.
 ```
 
+## selectcontrols
+
+`selectcontrols` ...
+
+The selection file must consist of a dictionary in YAML format.  The values are ignored, only the keys are considered.
+
+Example:
+
+```yaml
+-- Controls selected for limited scope assessment
+
+AC-1:
+AC-2:
+CM-4:
+IR-3:
+```
+
+Usage:
+
+```bash
+$ selectcontrols --template templates --output Limited_Scope --selection lsa.yaml
+```
+
 ## Major Contributors
 
 * **Tom Wood** - *Initial work* - [Woodt](https://github.com/woodt)

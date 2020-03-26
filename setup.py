@@ -30,6 +30,7 @@ setup(
             "makessp=makessp.makessp:main",
             "exportto=exportto.exportto:main",
             "creatematrix=creatematrix.creatematrix:main",
+            "selectcontrols=selectcontrols.selectcontrols:main"
         ]
     }
 )
