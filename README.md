@@ -70,7 +70,7 @@ to the selection filter.
 
 The selection filter is a YAML file in the OpenControl certification format.
 
-Example:
+Example selection file:
 
 ```yaml
 -- Controls selected for limited scope assessment
@@ -87,10 +87,20 @@ standards:
     AP-2:
 ```
 
-Usage:
+Example usage:
 
 ```bash
-$ selectcontrols --template templates --output Limited_Scope --selection lsa.yaml
+$ selectcontrols --in components --out Limited_Scope --selection lsa.yaml
+```
+
+Usage:
+```
+Options:
+  -s, --selection FILENAME  selected controls (YAML)
+  -i, --in DIRECTORY        Input directory tree  [required]
+  -o, --out PATH            Output directory [defaults to current directory]
+  -V, --verbose
+  --help                    Show this message and exit.
 ```
 
 ## Major Contributors

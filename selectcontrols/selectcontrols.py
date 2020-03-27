@@ -20,10 +20,10 @@ class Logger:
 @click.option('--selection', '-s',
               type=click.File(),
               help='selected controls (YAML)')
-@click.option('--templates', '-t', 'template_dir',
+@click.option('--in', '-i', 'template_dir',
               type=click.Path(exists=True, dir_okay=True, file_okay=False),
               required=True,
-              help='Template directory')
+              help='Input directory tree')
 @click.option('--out', '-o', 'out_',
               type=click.Path(exists=False, dir_okay=True, readable=True),
               default='.',
