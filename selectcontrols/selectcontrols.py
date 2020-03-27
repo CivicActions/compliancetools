@@ -45,7 +45,9 @@ def main(selection, template_dir, out_, verbose):
 
 def load_selection(selection):
     if selection:
-        return set(rtyaml.load(selection).keys())
+        objects = rtyaml.load(selection)
+        standards = objects['standards']
+        return set((standard, control_key) for standard in standards for control_key in standards[standard])
     else:
         return None
 
@@ -78,7 +80,8 @@ def is_selected(control, selection):
     if selection is None:
         return True
 
-    return control['control_key'] in selection
+    key = (control['standard_key'], control['control_key'])
+    return key in selection
 
 def select_controls(object, selection):
     edited = copy.deepcopy(object)

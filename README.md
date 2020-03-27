@@ -61,22 +61,30 @@ Options:
 
 ### selectcontrols
 
-`selectcontrols` copies one OpenControl repo to another, applying a filter to select particular controls.
+`selectcontrols` recursively copies one OpenControl directory tree to
+another, applying a filter to select particular controls.
 
-The controls must be in Fen-format.  Files named `component.yaml` are copied without change.  Family files
-are copied and edited according to the selection filter.
+The controls must be in Fen-format.  Files named `component.yaml` are
+copied without change.  Family files are copied and edited according
+to the selection filter.
 
-The selection filter is a YAML file containing a dictionary.  The values are ignored, only the keys are considered.
+The selection filter is a YAML file in the OpenControl certification format.
 
 Example:
 
 ```yaml
 -- Controls selected for limited scope assessment
-
-AC-1:
-AC-2:
-CM-4:
-IR-3:
+name: Limited Scope Assessment
+standards:
+  NIST-800-53 rev4:
+    AC-1:
+    AC-2:
+    CM-2:
+    CM-4:
+    IR-2:
+    IR-8:
+  NIST SP 800-53 Revision 4 Privacy:
+    AP-2:
 ```
 
 Usage:
