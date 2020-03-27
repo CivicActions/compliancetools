@@ -17,7 +17,7 @@ class Logger:
             print(*args)
 
 @click.command()
-@click.option('--selection',
+@click.option('--selection', '-s',
               type=click.File(),
               help='selected controls (YAML)')
 @click.option('--templates', '-t', 'template_dir',
@@ -47,7 +47,7 @@ def load_selection(selection):
     if selection:
         return set(rtyaml.load(selection).keys())
     else:
-        return set()
+        return None
 
 def process(selection, template_file, template_path, output_path, logger):
     logger.print("Checking {}".format(template_file))
@@ -74,10 +74,16 @@ def process(selection, template_file, template_path, output_path, logger):
     except Exception as e:
         print("Exception {} processing {}".format(e, template_file))
 
+def is_selected(control, selection):
+    if selection is None:
+        return True
+
+    return control['control_key'] in selection
+
 def select_controls(object, selection):
     edited = copy.deepcopy(object)
-    edited['satisfies'] = [ control for control in edited['satisfies']
-                            if control['control_key'] in selection ]
+    edited['satisfies'] = [control for control in edited['satisfies']
+                           if is_selected(control, selection)]
     return edited
 
 def rewrite(tf, td, od):

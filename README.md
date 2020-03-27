@@ -59,11 +59,14 @@ Options:
   --help                          Show this message and exit.
 ```
 
-## selectcontrols
+### selectcontrols
 
-`selectcontrols` ...
+`selectcontrols` copies one OpenControl repo to another, applying a filter to select particular controls.
 
-The selection file must consist of a dictionary in YAML format.  The values are ignored, only the keys are considered.
+The controls must be in Fen-format.  Files named `component.yaml` are copied without change.  Family files
+are copied and edited according to the selection filter.
+
+The selection filter is a YAML file containing a dictionary.  The values are ignored, only the keys are considered.
 
 Example:
 
