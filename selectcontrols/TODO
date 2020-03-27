@@ -1,0 +1,8 @@
+#-*- mode: org -*-
+#+ STARTUP: showall
+
+* TODO If as a result of selection a control family is empty, don't output it.
+* TODO Support defenestrated formats.
+* DONE Use OpenControl certification format as selection file format!
+  CLOSED: [2020-03-27 Fri 17:08]
+

@@ -59,6 +59,50 @@ Options:
   --help                          Show this message and exit.
 ```
 
+### selectcontrols
+
+`selectcontrols` recursively copies one OpenControl directory tree to
+another, applying a filter to select particular controls.
+
+The controls must be in Fen-format.  Files named `component.yaml` are
+copied without change.  Family files are copied and edited according
+to the selection filter.
+
+The selection filter is a YAML file in the OpenControl certification format.
+
+Example selection file:
+
+```yaml
+-- Controls selected for limited scope assessment
+name: Limited Scope Assessment
+standards:
+  NIST-800-53 rev4:
+    AC-1:
+    AC-2:
+    CM-2:
+    CM-4:
+    IR-2:
+    IR-8:
+  NIST SP 800-53 Revision 4 Privacy:
+    AP-2:
+```
+
+Example usage:
+
+```bash
+$ selectcontrols --in components --out Limited_Scope --selection lsa.yaml
+```
+
+Usage:
+```
+Options:
+  -s, --selection FILENAME  selected controls (YAML)
+  -i, --in DIRECTORY        Input directory tree  [required]
+  -o, --out PATH            Output directory [defaults to current directory]
+  -V, --verbose
+  --help                    Show this message and exit.
+```
+
 ## Major Contributors
 
 * **Tom Wood** - *Initial work* - [Woodt](https://github.com/woodt)
