@@ -22,7 +22,7 @@ import csv
                   'fedramp-high',
                   'fedramp-low',
                   'fedramp-moderate',
-                  'fedramp-tailored'
+                  'fedramp-tailored',
                   'fisma-high-impact',
                   'fisma-low-impact',
                   'fisma-mod-impact',
