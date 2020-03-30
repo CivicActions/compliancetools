@@ -12,15 +12,15 @@ from pathlib import Path
 @click.option('--controls', '-c', 'control_dir',
               required=True,
               type=click.Path(exists=True, dir_okay=True, readable=True),
-              help='The directory containing the control markdown files.')
+              help='The directory containing the control markdown files')
 @click.option('--type', '-t', 'file_type',
               required=False,
               default='docx',
-              help='The file type to create using Pandoc.')
+              help='The file type to create using Pandoc (default: docx)')
 @click.option('--out', '-o', 'out_',
               type=click.Path(exists=False, dir_okay=True, readable=True),
               default='docx',
-              help='Output directory')
+              help='Output directory (default: docx)')
 def main(control_dir, file_type, out_):
     base_path = Path()
     output_dir = base_path.joinpath(out_)

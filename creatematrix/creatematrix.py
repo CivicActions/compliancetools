@@ -13,24 +13,13 @@ import csv
               required=False,
               default="components",
               type=click.Path(exists=True, file_okay=False, dir_okay=True),
-              help="The path to the components directory.")
+              help="The path to the components directory (default: ./components)")
 @click.option("--cert", "-c", "cert",
               required=False,
               default="fisma-low-impact",
-              type=click.Choice([
-                  'dhs-4300a',
-                  'fedramp-high',
-                  'fedramp-low',
-                  'fedramp-moderate',
-                  'fedramp-tailored',
-                  'fisma-high-impact',
-                  'fisma-low-impact',
-                  'fisma-mod-impact',
-                  'icd-503-high',
-                  'icd-503-low',
-                  'icd-503-moderate',
-                ], case_sensitive=True),
-              help="The certification to use to create the matrix.")
+              type=click.Path(exists=False, dir_okay=True, readable=True),
+              help="The certification to use to create the matrix (default: fisma-low-impact)")
+
 def main(in_, cert):
     header, controls = getComponents(in_)
     createMatrix(header, controls, cert)

@@ -14,7 +14,7 @@ from pathlib import Path
 @click.option('--out', '-o', 'out_',
               type=click.Path(exists=False, dir_okay=True, readable=True),
               default='docs/controls',
-              help='Output directory')
+              help='Output directory (default: ./docs/controls)')
 def main(out_):
     base = Path()
     controls_dir = base.joinpath(out_)

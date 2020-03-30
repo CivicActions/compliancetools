@@ -22,7 +22,7 @@ import mmap
 @click.option('--in', '-i', 'in_',
               required=True,
               type=click.Path(exists=True, dir_okay=False, readable=True),
-              help='values (YAML)')
+              help='Replacement data values (YAML)')
 @click.option('--templates', '-t', 'template_dir',
               required=True,
               type=click.Path(exists=True, dir_okay=True, file_okay=False),
@@ -30,7 +30,7 @@ import mmap
 @click.option('--out', '-o', 'out_',
               type=click.Path(exists=False, dir_okay=True, readable=True),
               default='.',
-              help='Output directory (defaults to current directory)')
+              help='Output directory (default: current directory)')
 def main(in_, template_dir, out_):
     template_args = load_template_args(in_)
     od = Path(out_)

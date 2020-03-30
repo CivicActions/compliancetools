@@ -2,9 +2,9 @@
 
 ## Overview
 
-**Compliance Tools** is a suite of tools used to generate a _System Security Plan_, (SSP) a necessary component of an _Authority to Operate_ (ATO) for federal systems. Currently there are six tools; `createfiles`, `makefamilies`, `makessp`, `creatematrix`, `selectcontrols` and `exportto`.
+**Compliance Tools** is a suite of tools that facilitate the creation of system specific compliance documentation. For example, these tools may be used to generate a _System Security Plan_ (SSP) which is a necessary component of an _Authority to Operate_ (ATO) for federal systems.
 
-These compliance tools are generally employed when wrapped in a docker container, e.g.,  using [drydockcloud/ci-compliancetools](https://github.com/drydockcloud/ci-compliancetools).
+Currently there are six tools; `createfiles`, `makefamilies`, `makessp`, `creatematrix`, `selectcontrols` and `exportto`. These tools are generally wrapped in a docker container for ease of deployment and use, e.g., [drydockcloud/ci-compliancetools](https://github.com/drydockcloud/ci-compliancetools).
 
 ### createfiles
 
@@ -15,23 +15,32 @@ $ createfiles --help
 Usage: createfiles.py [OPTIONS]
 
 Options:
-  -i, --in FILE              values (YAML)  [required]
+  -i, --in FILE              Replacement data values (YAML)  [required]
   -t, --templates DIRECTORY  Template directory  [required]
-  -o, --out PATH             Output directory (defaults to current directory)
+  -o, --out PATH             Output directory (default: current directory)
   --help                     Show this message and exit.
 ```
 
-The output directory structure will mirror that found in the templates directory. For example, the following command will result in a file existing at `templates/appendices/configuration-management.md.j2` to be _secrendered_ using the data file `config.yaml` and output to `appendices/configuration-management.md`. (Note that the optional `.j2` suffix is removed.)
+The output directory structure will mirror that found in the templates directory. For example, the following command will result in a file existing at `./templates/appendices/configuration-management.md.j2` to be _secrendered_ using the data file `config.yaml` and output to `./appendices/configuration-management.md`. (Note that the optional `.j2` suffix is removed.)
 
 ```bash
 createfiles -i config.yaml -t templates
 ```
 
-A note about the input data values: This file can include files from a different YAML file for cleaner, more concise files. For example, the line `project: !include keys/project.yaml` may include project specific information, keyed as `project` from the `keys/` directory.
+*A note about the replacement data values:* This file can include files from a different YAML file for cleaner, more concise files. For example, the line `project: !include keys/project.yaml` may include project specific information, keyed as `project` from the `keys/` directory.
 
 ### makefamilies
 
 `makefamilies` aggregates the control files in the `components` directory by family, for example the file `docs/controls/AC.md` will contain all of the component controls that pertain to _Access Control_.
+
+```bash
+$ makefamilies --help
+Usage: makefamilies [OPTIONS]
+
+Options:
+  -o, --out PATH  Output directory (default: ./docs/controls)
+  --help          Show this message and exit.
+```
 
 ### makessp
 
@@ -39,35 +48,33 @@ A note about the input data values: This file can include files from a different
 
 ### creatematrix
 
-`creatematrix` generates a **responsiblity matrix** spreadsheet based on the components generated using `createfiles`. The spreadsheet shows the status of components such as _In Place_, _Planned_, _Inherited_, etc, and who is implementing those components.
+`creatematrix` generates a **responsiblity matrix** spreadsheet based on the components generated using `createfiles`. The spreadsheet shows the status of controls such as _In Place_, _Planned_, _Inherited_, etc, and which component is implementing those controls.
 
-Example:
-`creatematrix --in components --cert fisma-low-impact`
-
-`-i`, `--in` - This is the path to the components directory (default: `./components/`).
-
-`-c`, `--cert` - Define what _certification_ to use to generate the matrix (default: `fisma-low-impact`).
+Usage:
 
 ```bash
 $ creatematrix --help
 Usage: creatematrix.py [OPTIONS]
 
 Options:
-  -i, --in DIRECTORY              The path to the components directory.
-  -c, --cert [dhs-4300a|fedramp-high|fedramp-low|fedramp-moderate|fedramp-tailored|fisma-high-impact|fisma-low-impact|fisma-moderate-impact|icd-503-high|icd-503-low|icd-503-moderate]
-                                  The certification to use to create the
-                                  matrix.
-  --help                          Show this message and exit.
+  -i, --in DIRECTORY        The path to the components directory
+                            (default: ./components)
+  -c, --cert CERTIFICATION  The certification to use to create the matrix
+                            (default: fisma-low-impact)
+  --help                    Show this message and exit.
 ```
+
+Note that the certification can be any of those defined in [OpenControl/Certifications](https://github.com/opencontrol/certifications).
 
 ### selectcontrols
 
 `selectcontrols` recursively copies one OpenControl directory tree to
 another, applying a filter to select particular controls.
 
-The controls must be in Fen-format.  Files named `component.yaml` are
-copied without change.  Family files are copied and edited according
-to the selection filter.
+The controls currently must be in a CivicActions modified format that extends the OpenControl
+schema by supporting family controls to be grouped in separate files.
+Files named `component.yaml` are copied without change.
+Family files are copied and edited according to the selection filter.
 
 The selection filter is a YAML file in the OpenControl certification format.
 
@@ -96,6 +103,7 @@ $ selectcontrols --in components --out Limited_Scope --selection lsa.yaml
 
 Usage:
 ```
+$ selectcontrols --help
 Options:
   -s, --selection FILENAME  selected controls (YAML)
   -i, --in DIRECTORY        Input directory tree  [required]
@@ -106,7 +114,11 @@ Options:
 
 ### exportto
 
-`exportto` *(in development)* enables creation of (e.g.) docx files generated from markdown files. 
+`exportto` *(in development)* enables creation of (e.g.) docx files generated from markdown files. Try:
+
+```bash
+exportto -c docs/controls
+```
 
 ## Major Contributors
 
