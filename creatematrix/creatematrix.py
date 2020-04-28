@@ -29,13 +29,13 @@ def getComponents(components_dir):
     filelist = [x for x in p if x.is_file()]
     controls = {}
     header = {"id": "Control ID", "name": "Name", "status": "Status"}
-    with open('keys/status.yaml', "r") as st:
+    with open('keys/status.yaml', "r", newline="") as st:
         statuses = yaml.safe_load(st)
     for f in filelist:
         if f.name != "component.yaml":
             entity = f.parent.name
             header.update({entity: entity})
-            with open(f, "r") as stream:
+            with open(f, "r", newline="") as stream:
                 try:
                     control = yaml.safe_load(stream)
                 except yaml.YAMLError as exc:
@@ -66,7 +66,7 @@ def createMatrix(header, controls, cert):
         print(e)
 
     print('Creating responsibility matrix based on certification: {}'.format(cert))
-    with open(f, "r") as stream:
+    with open(f, "r", newline="") as stream:
         try:
             opencontrol = yaml.safe_load(stream)
         except yaml.YAMLError as exc:
@@ -88,7 +88,7 @@ def createMatrix(header, controls, cert):
                     row.append("")
             rows.append(row)
     print('Creating file responsibility_matrix.csv')
-    with open("responsibility_matrix.csv", "w+") as stream:
+    with open("responsibility_matrix.csv", "w+", newline="") as stream:
         writer = csv.writer(stream)
         writer.writerows(rows)
 

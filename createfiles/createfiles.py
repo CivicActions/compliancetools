@@ -57,7 +57,7 @@ def main(in_, template_dir, out_):
 
 def load_template_args(in_):
     YamlIncludeConstructor.add_to_loader_class(loader_class=FullLoader)
-    with open(in_, "r") as stream:
+    with open(in_, "r", newline="") as stream:
         yaml = load(stream, Loader=FullLoader)
     return secrender.get_template_args(yaml, None, dict())
 

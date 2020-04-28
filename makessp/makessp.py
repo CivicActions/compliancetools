@@ -22,7 +22,7 @@ def main():
 
     project = opencontrol.load_project_from_path(parent)
     ssp_doc = parent.joinpath(docs, 'ssp.md')
-    with open(ssp_doc, 'w') as output:
+    with open(ssp_doc, 'w', newline="") as output:
       # Table of Contents placeholder.
       print('<!--TOC-->\n\n', file=output)
       # Create SSP document.

@@ -44,7 +44,7 @@ def main(out_):
         fam_abbr = family[:2]
         if fam_abbr.isupper():
             control_file = controls_dir.joinpath(fam_abbr+'.md')
-            with open(control_file, 'w') as output:
+            with open(control_file, 'w', newline="") as output:
                 print("Creating {}".format(control_file))
                 print(ssp.build_ssp(project, {
                     "include-control-descriptions": True,
