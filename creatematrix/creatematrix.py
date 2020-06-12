@@ -19,12 +19,16 @@ import csv
               default="fisma-low-impact",
               type=click.Path(exists=False, dir_okay=True, readable=True),
               help="The certification to use to create the matrix (default: fisma-low-impact)")
+@click.option("--privacy", "-p", "privacy",
+              required=False,
+              default=0,
+              help="Include the Rev 4 Privacy controls in the matrix.")
 
-def main(in_, cert):
-    header, controls = getComponents(in_)
-    createMatrix(header, controls, cert)
+def main(in_, cert, privacy):
+    header, controls = getComponents(in_, privacy)
+    createMatrix(header, controls, cert, privacy)
 
-def getComponents(components_dir):
+def getComponents(components_dir, privacy):
     p = Path(components_dir).rglob("*.yaml")
     filelist = [x for x in p if x.is_file()]
     controls = {}
@@ -42,7 +46,6 @@ def getComponents(components_dir):
                     print(exc)
             for s in control["satisfies"]:
                 key = s["control_key"]
-
                 if "implementation_status" in s:
                     implements = "x"
                 else:
@@ -58,10 +61,17 @@ def getComponents(components_dir):
 
     return header, controls
 
-def createMatrix(header, controls, cert):
+def appendPrivacy(controls):
+    p = Path().cwd().joinpath('certifications/privacy.yaml')
+    with open(p, "r", newline="") as pr:
+        priv = yaml.safe_load(pr)
+    return {**controls["standards"]["NIST-800-53"], **priv["standards"]["NIST-800-53"]}
+
+def createMatrix(header, controls, cert, privacy):
     f = Path('/var/lib/certifications/' + cert + '.yaml')
+
     try:
-        f_absolute = f.resolve(strict=True)
+        f.resolve(strict=True)
     except FileNotFoundError as e:
         print(e)
 
@@ -72,13 +82,18 @@ def createMatrix(header, controls, cert):
         except yaml.YAMLError as exc:
             print(exc)
 
+        if privacy:
+            ctrl = appendPrivacy(opencontrol)
+        else:
+            ctrl = opencontrol["standards"]["NIST-800-53"]
+
         rows = []
         header_row = []
         for k, h in header.items():
             header_row.append(h)
         rows.append(header_row)
         header.pop("id", None)
-        for c in opencontrol["standards"]["NIST-800-53"]:
+        for c in ctrl:
             row = []
             row.append(c)
             for i, v in header.items():
