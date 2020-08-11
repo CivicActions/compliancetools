@@ -55,7 +55,7 @@ def getComponents(components_dir, privacy):
                     controls.update({key: {"name": s["control_name"], "id": key}})
                 controls[key].update({entity: implements})
 
-                status_key = key.replace('-', '_').replace(' (', '_').replace(')', '')
+                status_key = key.replace('_(', '(').replace('-0', '-')
                 if status_key in statuses:
                     controls[key].update({"status": statuses[status_key]["implementation_status"]})
 

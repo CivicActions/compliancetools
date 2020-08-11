@@ -22,15 +22,18 @@ setup(
         "pyyaml-include",
         "rtyaml",
         "pypandoc",
+        "openpyxl"
     ],
     entry_points = {
         "console_scripts": [
             "createfiles=createfiles.createfiles:main",
+            "creatematrix=creatematrix.creatematrix:main",
+            "exportto=exportto.exportto:main",
             "makefamilies=makefamilies.makefamilies:main",
             "makessp=makessp.makessp:main",
-            "exportto=exportto.exportto:main",
-            "creatematrix=creatematrix.creatematrix:main",
-            "selectcontrols=selectcontrols.selectcontrols:main"
+            "selectcontrols=selectcontrols.selectcontrols:main",
+            "status=status.status:main",
+            "xlwriter=xlwriter.xlwriter:main"
         ]
     }
 )
