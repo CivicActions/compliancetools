@@ -42,7 +42,6 @@ def main():
             else:
                 ws[status_col+str(row_num)] = 'not applicable'
         wb.save(out)
-        wb.close()
 
 def get_narratives(narr):
     '''Return the control narratives as a string.'''
@@ -68,7 +67,6 @@ def load_options():
     if options_file.is_file():
         with open(options_file, newline="") as stream:
             options = yaml.safe_load(stream)
-            stream.close()
             return options
     else:
         create_options()
@@ -104,7 +102,6 @@ def create_options():
     with open(Path('keys/spreadsheet.yaml'), mode='w', newline='\r\n') as opt_file:
         print('Creating keys/spreadsheet.yaml file.')
         yaml.dump(opts, opt_file)
-        opt_file.close()
     raise Exception('The values in the spreadsheet.yaml file are required.')
 
 def get_control_data():
@@ -141,7 +138,6 @@ def get_opencontrol():
         raise ValueError("OpenControl file {} could not be loaded: {}.".format(
             oc_yaml,
             str(e) ))
-    f.close()
     return opencontrol
 
 def parse_controls(components):
@@ -188,7 +184,6 @@ def parse_controls(components):
                     if key not in cd[ctrl]['narrative']:
                         cd[ctrl]['narrative'][key] = []
                     cd[ctrl]['narrative'][key].append(sum)
-            ct.close()
     return cd
 
 def get_statuses():
@@ -200,7 +195,6 @@ def get_statuses():
                 stat = yaml.safe_load(stream)
             except yaml.YAMLError as exc:
                 print(exc)
-        stream.close()
         return stat
 
 def get_key_values(file, key):
@@ -210,7 +204,6 @@ def get_key_values(file, key):
     if k.exists:
         with open(k, newline="") as stream:
             options = yaml.safe_load(stream)
-        stream.close()
     return options[key]
 
 if __name__ == "__main__":

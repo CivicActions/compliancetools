@@ -68,7 +68,7 @@ def appendPrivacy(controls):
     return {**controls["standards"]["NIST-800-53"], **priv["standards"]["NIST-800-53"]}
 
 def createMatrix(header, controls, cert, privacy):
-    f = Path('/var/lib/certifications/' + cert + '.yaml')
+    f = Path('certifications/' + cert + '.yaml')
 
     try:
         f.resolve(strict=True)
