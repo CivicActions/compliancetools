@@ -98,12 +98,13 @@ standards:
 Example usage:
 
 ```bash
-$ selectcontrols --in components --out Limited_Scope --selection lsa.yaml
+selectcontrols --in components --out Limited_Scope --selection lsa.yaml
 ```
 
 Usage:
-```
-$ selectcontrols --help
+
+```bash
+selectcontrols --help
 Options:
   -s, --selection FILENAME  selected controls (YAML)
   -i, --in DIRECTORY        Input directory tree  [required]
@@ -119,6 +120,25 @@ Options:
 ```bash
 exportto -c docs/controls
 ```
+
+### xlwriter
+
+`xlwriter` uses the information in the `/keys/status.yaml` file and the compile component files, then updates an Excel spreadsheet with the _Security Control Type_, _Control Status_, and the _Control Implementation Statement_. There is quite a bit of information need to run this command, so we use a yaml file to populate the information. If you run `xlwriter` without the yaml file, one will be created for you. You will need the following information:
+
+```yaml
+control_type_column: 'Y' # This is the Security Control Type column.
+implementation_column: 'AC' # This is the Control Implementation Statement column.
+status_column: 'AA' # This is the Control Status column.
+control_column: 6 # This is the column that contains the Control ID. Oddly, this needs to be a numeric value.
+starting_row: 5 # The row from which to start looping through spreadsheet.
+copy_to_directory: 'docx' # We don't edit the original file, so tell us where to copy it to.
+original_file: 'orig/Appendix-X.xlsm' # The original xls(m,x) file. This must live somewhere in the project root.
+sheet_name: 'FIPS 199 LOW Catalog' # The sheet name to read from and write to.
+```
+
+Usage:
+
+Just run `xlwriter`. If you don't have the `/keys/spreadsheet.yaml` file it will be created for you. If you run it without filling out the values, it will error out.
 
 ## Major Contributors
 
