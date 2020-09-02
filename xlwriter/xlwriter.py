@@ -31,7 +31,7 @@ def main():
             if row[control_col].value is None:
                 break
             ctrl = row[control_col].value
-            status_key = ctrl.replace('(', '_(').replace('-0', '-').strip()
+            status_key = ctrl.replace('(', '_(').replace('-0', '-').replace('(0', '(').strip()
             if status_key in cd:
                 print("Updating {}".format(status_key))
                 if 'status' in cd[status_key]:
