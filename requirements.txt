@@ -11,7 +11,7 @@ fpyutils==1.1.0           # via md-toc
 jdcal==1.4.1              # via openpyxl
 md-toc==6.0.2
 openpyxl==3.0.4
-pypandoc==1.4
+pypandoc==1.5
 pyyaml-include==1.2
 pyyaml==5.3
 rtyaml==1.0.0
