@@ -154,4 +154,4 @@ SPDX-License-Identifier: `GPL-3.0-or-later`
 
 ## Copyright
 
-Copyright 2019-2020 CivicActions, Inc.
+Copyright 2019-2021 CivicActions, Inc.
