@@ -15,7 +15,7 @@ pypandoc==1.5
 pyyaml-include==1.2
 pyyaml==5.4
 rtyaml==1.0.0
-wheel==0.34.2             # via pypandoc
+wheel==0.38.1             # via pypandoc
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip
