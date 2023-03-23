@@ -3,8 +3,7 @@
 # Copyright 2019-2020 CivicActions, Inc. See the README file at the top-level
 # directory of this distribution and at https://github.com/CivicActions/compliancetools#copyright.
 
-from setuptools import setup
-from setuptools import find_packages
+from setuptools import find_packages, setup
 
 setup(
     name="compliancetools",
@@ -22,9 +21,9 @@ setup(
         "pyyaml-include",
         "rtyaml",
         "pypandoc",
-        "openpyxl"
+        "openpyxl",
     ],
-    entry_points = {
+    entry_points={
         "console_scripts": [
             "createfiles=createfiles.createfiles:main",
             "creatematrix=creatematrix.creatematrix:main",
@@ -32,8 +31,9 @@ setup(
             "makefamilies=makefamilies.makefamilies:main",
             "makessp=makessp.makessp:main",
             "selectcontrols=selectcontrols.selectcontrols:main",
+            "sop=sop.sop:main",
             "status=status.status:main",
-            "xlwriter=xlwriter.xlwriter:main"
+            "xlwriter=xlwriter.xlwriter:main",
         ]
-    }
+    },
 )
