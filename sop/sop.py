@@ -4,8 +4,9 @@ import re
 from pathlib import Path
 
 import click
-import yaml  # type: ignore
 from sop_writer import SopWriter
+from yaml import FullLoader, load  # type: ignore
+from yamlinclude import YamlIncludeConstructor
 
 # Copyright 2019-2020 CivicActions, Inc. See the README file at the top-level
 # directory of this distribution and at https://github.com/CivicActions/compliancetools#copyright.
@@ -32,7 +33,7 @@ def aggregate_control_data(component_dir: Path) -> dict:
             families[family] = {}
 
         with open(template, "r") as tmpy:
-            component = yaml.load(tmpy, Loader=yaml.FullLoader)
+            component = load(tmpy, Loader=FullLoader)
         satisfies = component.get("satisfies")
         for control in satisfies:
             control_id = control.get("control_key")
@@ -51,9 +52,9 @@ def aggregate_control_data(component_dir: Path) -> dict:
                 if part not in families[family][key]:
                     families[family][key][part] = []
                 families[family][key][part].append(parts.get("text"))
-    sort_controls((families))
-    sorted_families = sort_parts(families)
-    return sorted_families
+    sort_controls(families)
+    sort_parts(families)
+    return families
 
 
 def create_sortable_id(control_id, type: str = "simple"):
@@ -68,12 +69,13 @@ def create_sortable_id(control_id, type: str = "simple"):
         return f"{family.upper()}-{str(number).zfill(2)}{extension}"
 
 
-def write_files(families: dict, out_dir: Path):
+def write_files(families: dict, out_dir: Path, config: dict):
     """
     Write the Control Family data to markdown files.
 
     :param families: a dictionary of Controls sorted by Control Family.
     :param out_dir: a pathlib file path object where to write the files.
+    :param config: a dictionary containing the configuration key values.
     """
 
     for family, controls in families.items():
@@ -82,13 +84,23 @@ def write_files(families: dict, out_dir: Path):
         title = f"{family_name} ({family[:2].upper()}) Standard (SOP)"
         text = SopWriter(
             filepath=filename,
+            family=family[:2].upper(),
             controls=controls,
+            config=config,
             title=title,
         )
         text.create_file()
 
 
 @click.command()
+@click.option(
+    "--in",
+    "-i",
+    "input_file",
+    required=True,
+    type=click.Path(exists=True, dir_okay=False, readable=True),
+    help="Replacement data values (YAML)",
+)
 @click.option(
     "--components",
     "-c",
@@ -105,8 +117,12 @@ def write_files(families: dict, out_dir: Path):
     default=".",
     help="Output directory (default: current directory)",
 )
-def main(components_dir: str, output_dir: str):
+def main(input_file: str, components_dir: str, output_dir: str):
     out_dir = Path(output_dir).joinpath("sop")
+    YamlIncludeConstructor.add_to_loader_class(loader_class=FullLoader)
+    with open(Path(input_file), "r") as conf:
+        config = load(conf, Loader=FullLoader)
+
     if not out_dir.is_dir():
         out_dir.mkdir(parents=True, exist_ok=True)
 
@@ -114,7 +130,7 @@ def main(components_dir: str, output_dir: str):
 
     families = aggregate_control_data(rendered_components)
 
-    write_files(families, out_dir)
+    write_files(families, out_dir, config)
 
 
 def sort_parts(families: dict) -> dict:

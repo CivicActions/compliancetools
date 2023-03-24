@@ -13,7 +13,9 @@ from createfiles.createfiles import write_toc
 @dataclass
 class SopWriter:
     filepath: Path
+    family: str
     controls: dict
+    config: dict
     title: str
 
     def create_file(self):
@@ -23,7 +25,8 @@ class SopWriter:
         try:
             self.output_file = StringIO()
             self.__write_header()
-            self.__write_introduction()
+            self.__write_purpose()
+            self.__write_scope()
             self.__write_controls()
             self.__write_file()
         finally:
@@ -47,20 +50,21 @@ class SopWriter:
         self.output_file.write("----\n")
         self.output_file.write("**Table of Contents**")
         self.output_file.write("\n<!--TOC-->\n---\n\n")
+        self.output_file.write("## Introduction\n\n")
 
-    def __write_introduction(self):
-        """
-        Add the main sections to the file stream.
-        """
-        self.output_file.write("# Introduction\n\n")
-        self.output_file.write("## Purpose\n\n")
-        self.output_file.write("## Scope\n\n")
-        self.output_file.write("## Standards\n\n")
+    def __write_purpose(self):
+        self.output_file.write("### Purpose\n\n")
+        self.output_file.write(self.config.get("sop").get(self.family).get("purpose"))
+
+    def __write_scope(self):
+        self.output_file.write("### Scope\n\n")
+        self.output_file.write(self.config.get("sop").get(self.family).get("scope"))
 
     def __write_controls(self):
         """
         Write the controls to the file stream.
         """
+        self.output_file.write("## Standards\n\n")
         for control_id, control in self.controls.items():
             self.output_file.write(f"### {control_id}\n\n")
             self.__write_text(control)

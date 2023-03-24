@@ -4,7 +4,7 @@
 
 **Compliance Tools** is a suite of tools that facilitate the creation of system specific compliance documentation. For example, these tools may be used to generate a _System Security Plan_ (SSP) which is a necessary component of an _Authority to Operate_ (ATO) for federal systems.
 
-Currently there are six tools; `createfiles`, `makefamilies`, `makessp`, `creatematrix`, `selectcontrols` and `exportto`. These tools are generally wrapped in a docker container for ease of deployment and use, e.g., [drydockcloud/ci-compliancetools](https://github.com/drydockcloud/ci-compliancetools).
+Currently, there are six tools; `createfiles`, `makefamilies`, `makessp`, `creatematrix`, `selectcontrols` and `exportto`. These tools are generally wrapped in a docker container for ease of deployment and use, e.g., [drydockcloud/ci-compliancetools](https://github.com/drydockcloud/ci-compliancetools).
 
 ### createfiles
 
@@ -31,7 +31,7 @@ createfiles -i config.yaml -t templates
 
 ### makefamilies
 
-`makefamilies` aggregates the control files in the `components` directory by family, for example the file `docs/controls/AC.md` will contain all of the component controls that pertain to _Access Control_.
+`makefamilies` aggregates the control files in the `components` directory by family, for example the file `docs/controls/AC.md` will contain all the component controls that pertain to _Access Control_.
 
 ```bash
 $ makefamilies --help
@@ -48,7 +48,7 @@ Options:
 
 ### creatematrix
 
-`creatematrix` generates a **responsiblity matrix** spreadsheet based on the components generated using `createfiles`. The spreadsheet shows the status of controls such as _In Place_, _Planned_, _Inherited_, etc, and which component is implementing those controls.
+`creatematrix` generates a **responsiblity matrix** spreadsheet based on the components generated using `createfiles`. The spreadsheet shows the status of controls such as _In Place_, _Planned_, _Inherited_, etc., and which component is implementing those controls.
 
 Usage:
 
@@ -81,7 +81,6 @@ The selection filter is a YAML file in the OpenControl certification format.
 Example selection file:
 
 ```yaml
--- Controls selected for limited scope assessment
 name: Limited Scope Assessment
 standards:
   NIST-800-53 rev4:
@@ -131,6 +130,7 @@ Usage:
 Usage: sop.py [OPTIONS]
 
 Options:
+  -i, --in FILE               Replacement data values (YAML)  [required]
   -c, --components DIRECTORY  Rendered components directory  [required]
   -o, --out PATH              Output directory (default: current directory)
   --help                      Show this message and exit.
