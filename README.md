@@ -121,9 +121,26 @@ Options:
 exportto -c docs/controls
 ```
 
+### sop
+
+`sop` creates SOP documents for each Control Family. The command takes two arguments; `-c` or `--components`, and `-o` or `--out`.
+
+Usage:
+
+```shell
+Usage: sop.py [OPTIONS]
+
+Options:
+  -c, --components DIRECTORY  Rendered components directory  [required]
+  -o, --out PATH              Output directory (default: current directory)
+  --help                      Show this message and exit.
+```
+
+The SOP files will be generated in a directory named `sop` within the directory specified by `--out`.
+
 ### xlwriter
 
-`xlwriter` uses the information in the `/keys/status.yaml` file and the compile component files, then updates an Excel spreadsheet with the _Security Control Type_, _Control Status_, and the _Control Implementation Statement_. There is quite a bit of information need to run this command, so we use a yaml file to populate the information. If you run `xlwriter` without the yaml file, one will be created for you. You will need the following information:
+`xlwriter` uses the information in the `/keys/status.yaml` file and the compiled component files, then updates an Excel spreadsheet with the _Security Control Type_, _Control Status_, and the _Control Implementation Statement_. There is quite a bit of information need to run this command, so we use a yaml file to populate the information. If you run `xlwriter` without the yaml file, one will be created for you. You will need the following information:
 
 ```yaml
 control_type_column: 'Y' # This is the Security Control Type column.
