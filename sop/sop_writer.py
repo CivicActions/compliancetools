@@ -55,10 +55,12 @@ class SopWriter:
     def __write_purpose(self):
         self.output_file.write("### Purpose\n\n")
         self.output_file.write(self.config.get("sop").get(self.family).get("purpose"))
+        self.output_file.write("\n\n")
 
     def __write_scope(self):
         self.output_file.write("### Scope\n\n")
         self.output_file.write(self.config.get("sop").get(self.family).get("scope"))
+        self.output_file.write("\n\n")
 
     def __write_controls(self):
         """
