@@ -1,15 +1,103 @@
 #!/usr/bin/env python
-
 import re
+from dataclasses import dataclass
+from datetime import date
+from io import StringIO
 from pathlib import Path
 
 import click
-from sop_writer import SopWriter
 from yaml import FullLoader, load  # type: ignore
 from yamlinclude import YamlIncludeConstructor
 
+from createfiles.createfiles import write_toc
+
 # Copyright 2019-2020 CivicActions, Inc. See the README file at the top-level
 # directory of this distribution and at https://github.com/CivicActions/compliancetools#copyright.
+
+
+@dataclass
+class SopWriter:
+    filepath: Path
+    family: str
+    controls: dict
+    config: dict
+    title: str
+
+    def create_file(self):
+        """
+        Create a file stream to be used to be written to the markdown files.
+        """
+        try:
+            self.output_file = StringIO()
+            self.__write_header()
+            self.__write_purpose()
+            self.__write_scope()
+            self.__write_controls()
+            self.__write_file()
+        finally:
+            self.output_file.close()
+
+    def __write_file(self):
+        """
+        Write the file with the table of contents to the filesystem.
+        """
+        print(f"Writing file to {self.filepath}")
+        with open(self.filepath, "w+") as md:
+            print(self.output_file.getvalue(), file=md)
+        write_toc(self.filepath)
+
+    def __write_header(self):
+        """
+        Add the page header with generation date and TOC placeholder.
+        """
+        self.output_file.write(f"# {self.title}\n\n")
+        self.output_file.write(f"*Reviewed and updated {date.today()}*\n\n")
+        self.output_file.write("----\n")
+        self.output_file.write("**Table of Contents**")
+        self.output_file.write("\n<!--TOC-->\n---\n\n")
+        self.output_file.write("## Introduction\n\n")
+
+    def __write_purpose(self):
+        self.output_file.write("### Purpose\n\n")
+        self.output_file.write(self.config.get("sop").get(self.family).get("purpose"))
+        self.output_file.write("\n\n")
+
+    def __write_scope(self):
+        self.output_file.write("### Scope\n\n")
+        self.output_file.write(self.config.get("sop").get(self.family).get("scope"))
+        self.output_file.write("\n\n")
+
+    def __write_controls(self):
+        """
+        Write the controls to the file stream.
+        """
+        self.output_file.write("## Standards\n\n")
+        for control_id, control in self.controls.items():
+            self.output_file.write(f"### {control_id}\n\n")
+            self.__write_text(control)
+            self.__write_parts(control)
+
+    def __write_text(self, control: dict):
+        """
+        Write the non-parts control narrative text.
+
+        :param control: a dictionary of control narratives.
+        """
+        text = control.get("text", None)
+        if text:
+            prose = "\n\n".join(text)
+            self.output_file.write(f"{prose}\n\n")
+
+    def __write_parts(self, control: dict):
+        """
+        Write the control parts narrative text.
+
+        :param control: a dictionary of control narratives.
+        """
+        for part, text in control.items():
+            if part != "text":
+                prose = "\n\n".join(text)
+                self.output_file.write(f"**{part}.**\t{prose}\n")
 
 
 def aggregate_control_data(component_dir: Path) -> dict:
@@ -57,15 +145,15 @@ def aggregate_control_data(component_dir: Path) -> dict:
     return families
 
 
-def create_sortable_id(control_id, type: str = "simple"):
-    if type == "simple":
+def create_sortable_id(control_id, control_type: str = "simple"):
+    if control_type == "simple":
         match = re.match(r"^([a-z]{2})-(\d+)$", control_id)
     else:
         match = re.match(r"^([a-z]{2})-(\d+)\s*\((\d+)\)$", control_id)
     if match:
         family = match.group(1)
         number = int(match.group(2))
-        extension = f"({int(match.group(3))})" if type == "extended" else ""
+        extension = f"({int(match.group(3))})" if control_type == "extended" else ""
         return f"{family.upper()}-{str(number).zfill(2)}{extension}"
 
 
