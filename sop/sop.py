@@ -130,7 +130,7 @@ def aggregate_control_data(component_dir: Path) -> dict:
             else:
                 control_key = create_sortable_id(control_id.strip().lower(), "simple")
             control_name = control.get("control_name").title()
-            key = f"{control_key} - {control_name}"
+            key = f"{control_key} {control_name}"
             if key and key not in families[family]:
                 families[family][key] = {}
 
