@@ -52,9 +52,9 @@ class SopWriter:
         """
         self.output_file.write(f"# {self.title}\n\n")
         self.output_file.write(f"*Reviewed and updated {date.today()}*\n\n")
-        self.output_file.write("----\n")
+        self.output_file.write("----\n\n")
         self.output_file.write("**Table of Contents**")
-        self.output_file.write("\n<!--TOC-->\n---\n\n")
+        self.output_file.write("\n<!--TOC-->\n\n----\n\n")
         self.output_file.write("## Introduction\n\n")
 
     def __write_purpose(self):
