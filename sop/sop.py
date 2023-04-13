@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+import hashlib
+import io
+import json
 import re
 from dataclasses import dataclass
 from datetime import date
@@ -107,18 +110,34 @@ def aggregate_control_data(component_dir: Path) -> dict:
     :param component_dir: a pathlib object file path object.
     :return: a dictionary with all the Controls sorted by Family.
     """
+    hashes = get_file_hashes(component_dir)
 
     families: dict = {}
     components = component_dir.rglob("*")
     templates = [
         cfile
         for cfile in components
-        if cfile.is_file() and cfile.name != "component.yaml"
+        if cfile.is_file() and cfile.name not in ["component.yaml", "file_hashes.json"]
     ]
+    new_hashes: dict = {}
+    for file_name in templates:
+        new_hashes[file_name.as_posix()] = hash_bytestr_iter(
+            file_as_blockiter(open(file_name, "rb")), hashlib.sha256()
+        )
+
     for template in templates:
         family = template.stem.lower().replace("_", "-")
         if family not in families:
             families[family] = {}
+
+        template_string = template.as_posix()
+        has_changes = (
+            True
+            if new_hashes.get(template_string) != hashes.get(template_string)
+            else False
+        )
+        if has_changes:
+            families[family]["has_changes"] = True
 
         with open(template, "r") as tmpy:
             component = load(tmpy, Loader=FullLoader)
@@ -140,9 +159,61 @@ def aggregate_control_data(component_dir: Path) -> dict:
                 if part not in families[family][key]:
                     families[family][key][part] = []
                 families[family][key][part].append(parts.get("text"))
-    sort_controls(families)
-    sort_parts(families)
-    return families
+
+    write_families: dict = {}
+    for f, v in families.items():
+        if v.get("has_changes"):
+            del v["has_changes"]
+            write_families[f] = v
+    write_file_hashes(file_path=component_dir, hashes=new_hashes)
+    sort_controls(write_families)
+    sort_parts(write_families)
+    return write_families
+
+
+def hash_bytestr_iter(bytesiter, hasher, ashexstr: bool = False) -> bytes:
+    for block in bytesiter:
+        hasher.update(block)
+    return hasher.hexdigest() if ashexstr else hasher.hexdigest()
+
+
+def file_as_blockiter(afile: io.BufferedReader, blocksize: int = 65536):
+    with afile:
+        block = afile.read(blocksize)
+        while len(block) > 0:
+            yield block
+            block = afile.read(blocksize)
+
+
+def get_file_hashes(file_path: Path) -> dict:
+    """
+    Return the file containing the file hashes from the last time the script
+    was run.
+
+    :param file_path: pathlib Path object
+    :return: dict of file hashes or an empty dict.
+    """
+    file_hashes = file_path.joinpath("file_hashes").with_suffix(".json")
+    if file_hashes.is_file():
+        with open(file_hashes, "r+") as h:
+            old_hashes = load(h, Loader=FullLoader)
+        hashes = old_hashes if old_hashes else {}
+    else:
+        hashes = {}
+    return hashes
+
+
+def write_file_hashes(file_path: Path, hashes: dict):
+    """
+    Return the file containing the file hashes from the last time the script
+    was run.
+
+    :param file_path: pathlib Path object
+    :param hashes: dict containing the file hashes
+    """
+    file_hashes = file_path.joinpath("file_hashes").with_suffix(".json")
+    with open(file_hashes, "w+", encoding="utf-8") as h:
+        json.dump(hashes, h, ensure_ascii=False, indent=4)
 
 
 def create_sortable_id(control_id, control_type: str = "simple"):
